@@ -1,9 +1,8 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-    mode: 'development',
+    mode: 'production',
     devtool: 'inline-source-map',
     devServer: {
         contentBase: './dist',
@@ -19,10 +18,6 @@ module.exports = {
     ],
     module: {
         rules: [
-            {
-                test: /\.css$/i,
-                use: ['style-loader', 'css-loader'],//如果文件名以.css结尾，就用css-loader把css放js里，用style-loader把css放head里
-            },
         ],
     },
 };

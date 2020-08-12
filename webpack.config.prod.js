@@ -3,7 +3,7 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-    mode: 'development',
+    mode: 'production',
     devtool: 'inline-source-map',
     devServer: {
         contentBase: './dist',
@@ -16,12 +16,26 @@ module.exports = {
         title: 'wode',
         template: 'src/assets/index.html'//用我给你的模板来生成html
     }),
+    new MiniCssExtractPlugin({
+        // Options similar to the same options in webpackOptions.output
+        // both options are optional
+        filename: '[name].[contenthash].css',
+        chunkFilename: '[id].[contenthash].css',
+    }),
     ],
     module: {
         rules: [
             {
                 test: /\.css$/i,
-                use: ['style-loader', 'css-loader'],//如果文件名以.css结尾，就用css-loader把css放js里，用style-loader把css放head里
+                use: [
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                        options: {
+                            publicPath: '/public/path/to/',
+                        },
+                    },
+                    'css-loader',
+                ],
             },
         ],
     },
