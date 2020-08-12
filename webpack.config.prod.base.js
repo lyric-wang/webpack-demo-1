@@ -1,23 +1,44 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const path = require('path');
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const path = require("path");
 
 module.exports = {
-    mode: 'production',
-    devtool: 'inline-source-map',
-    devServer: {
-        contentBase: './dist',
-    },
-    entry: './src/index.js',
+    entry: "./src/index.js",
     output: {
-        filename: '[name].[contenthash].js'
+        filename: "index.[contenthash].js"
     },
-    plugins: [new HtmlWebpackPlugin({
-        title: 'wode',
-        template: 'src/assets/index.html'//用我给你的模板来生成html
-    }),
+    plugins: [
+        new HtmlWebpackPlugin({
+            title: "XDML - 写代码啦",
+            template: "src/assets/index.html"
+        })
     ],
     module: {
         rules: [
-        ],
-    },
+            {
+                test: /\.(png|svg|jpg|gif)$/,
+                use: ["file-loader"]
+            },
+            {
+                test: /\.styl$/,
+                loader: ["style-loader", "css-loader", "stylus-loader"]
+            },
+            {
+                test: /\.less$/,
+                loader: ["style-loader", "css-loader", "less-loader"]
+            },
+            {
+                test: /\.scss$/i,
+                use: [
+                    "style-loader",
+                    "css-loader",
+                    {
+                        loader: "sass-loader",
+                        options: {
+                            implementation: require("dart-sass")
+                        }
+                    }
+                ]
+            }
+        ]
+    }
 };

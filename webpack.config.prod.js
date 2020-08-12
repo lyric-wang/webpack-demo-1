@@ -1,42 +1,34 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const path = require('path');
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const path = require("path");
+const base = require('./webpack.config.base.js')
 
 module.exports = {
-    mode: 'production',
-    devtool: 'inline-source-map',
-    devServer: {
-        contentBase: './dist',
-    },
-    entry: './src/index.js',
-    output: {
-        filename: '[name].[contenthash].js'
-    },
-    plugins: [new HtmlWebpackPlugin({
-        title: 'wode',
-        template: 'src/assets/index.html'//用我给你的模板来生成html
-    }),
-    new MiniCssExtractPlugin({
-        // Options similar to the same options in webpackOptions.output
-        // both options are optional
-        filename: '[name].[contenthash].css',
-        chunkFilename: '[id].[contenthash].css',
-    }),
+    ...base,
+    mode: "production",
+    plugins: [
+        ...base.plugins,
+        new MiniCssExtractPlugin({
+            filename: '[name].[contenthash].css',
+            chunkFilename: '[id].[contenthash].css',
+            ignoreOrder: false, // Enable to remove warnings about conflicting order
+        }),
     ],
     module: {
         rules: [
+            ...base.module.rules,
             {
                 test: /\.css$/i,
                 use: [
                     {
                         loader: MiniCssExtractPlugin.loader,
                         options: {
-                            publicPath: '/public/path/to/',
+                            publicPath: '../',
                         },
                     },
                     'css-loader',
                 ],
-            },
-        ],
-    },
+            }
+        ]
+    }
 };
